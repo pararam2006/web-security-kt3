@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
-const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(csrfProtection);
 app.set('view engine', 'ejs');
 
 // "База данных" пользователя
@@ -14,7 +15,10 @@ let user = {
 
 // Главная страница с формой
 app.get('/', (req, res) => {
-    res.render('profile', { email: user.email });
+    res.render('profile', {
+        email: user.email,
+        csrfToken: req.csrfToken()
+    });
 });
 
 // Уязвимый обработчик смены email (нет CSRF-защиты)

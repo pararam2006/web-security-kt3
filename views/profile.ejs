@@ -9,6 +9,7 @@
 
 <h2>Сменить email</h2>
 <form action="/update-email" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <input type="email" name="email" required>
     <button type="submit">Обновить</button>
 </form>
